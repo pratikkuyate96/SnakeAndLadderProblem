@@ -77,4 +77,4 @@ then
 else
 	echo "Player2 Won!"
 fi
-echo "Turn required: $rollCount"
+echo "Turn required : $rollCount"
