@@ -22,6 +22,9 @@ function showCurrentPosition {
 
 function rollDice() {
 	diceValue=$((RANDOM%6 + 1))
+}
+
+function options() {
 	option=$((RANDOM%3 + 1))
 }
 
@@ -29,6 +32,7 @@ while [[ $currentPositionPlayer1 -ne $WINNING_POSITION && $currentPositionPlayer
 do
 	showCurrentPosition
 	rollDice
+	options
 	(( rollCount++ ))
 
 	if [[ $player -eq 1 ]]
@@ -37,30 +41,29 @@ do
 	else
 		tempPosition=$currentPositionPlayer2
 	fi
-
 		case $option in
 			$NOPLAY)
 				echo "No play..."
 				echo "Player $player stays at same position $tempPosition";;
 			$SNAKE)
 				echo "Snake..."
-					if [[ $(( $"$tempPosition" - $diceValue )) -lt $STARTING_POSITION ]]
-					then
-						tempPosition=$STARTING_POSITION
-						echo "Player $player has came back to starting position"
-					else
-						((tempPosition-=$diceValue))
-						echo "Player $player moves backward by $diceValue positions"
-					fi;;
+				if [[ $(( $"$tempPosition" - $diceValue )) -lt $STARTING_POSITION ]]
+				then
+					tempPosition=$STARTING_POSITION
+					echo "Player $player has came back to starting position"
+				else
+					((tempPosition-=$diceValue))
+					echo "Player $player moves backward by $diceValue positions"
+				fi;;
 			$LADDER)
 				echo "Ladder..."
-					if [ $(( $"$tempPosition" + $diceValue )) -le $WINNING_POSITION ]
-					then
-						((tempPosition+=$diceValue))
-						echo "Player $player moves forward by $diceValue positions"
-					else
-						echo "Player$player stays at same position $tempPosition"
-					fi;;
+				if [ $(( $"$tempPosition" + $diceValue )) -le $WINNING_POSITION ]
+				then
+					((tempPosition+=$diceValue))
+					echo "Player $player moves forward by $diceValue positions"
+				else
+					echo "Player$player stays at same position $tempPosition"
+				fi;;
 		esac
 		if [[ $player -eq 1 ]]
 		then
@@ -77,4 +80,4 @@ then
 else
 	echo "Player2 Won!"
 fi
-echo "Turn required : $rollCount"
+	echo "Turn required : $rollCount"
