@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "~~~~~~~~START GAME~~~~~~~~~"
 
 #Constant
@@ -22,25 +21,22 @@ function showCurrentPosition {
 
 function rollDice() {
 	diceValue=$((RANDOM%6 + 1))
-}
-
-function options() {
 	option=$((RANDOM%3 + 1))
 }
 
-while [[ $currentPositionPlayer1 -ne $WINNING_POSITION && $currentPositionPlayer2 -ne $WINNING_POSITION ]]
-do
-	showCurrentPosition
-	rollDice
-	options
-	(( rollCount++ ))
+function play() {
+	while [[ $currentPositionPlayer1 -ne $WINNING_POSITION && $currentPositionPlayer2 -ne $WINNING_POSITION ]]
+	do
+		showCurrentPosition
+		rollDice
+		(( rollCount++ ))
 
-	if [[ $player -eq 1 ]]
-	then
-		tempPosition=$currentPositionPlayer1
-	else
-		tempPosition=$currentPositionPlayer2
-	fi
+		if [[ $player -eq 1 ]]
+		then
+			tempPosition=$currentPositionPlayer1
+		else
+			tempPosition=$currentPositionPlayer2
+		fi
 		case $option in
 			$NOPLAY)
 				echo "No play..."
@@ -72,12 +68,20 @@ do
 			currentPositionPlayer2=$tempPosition
 		fi
 		player=$(( 3 - $player))
-done
+	done
+	checkWon
+}
 
-if [[ $currentPositionPlayer1 -eq $WINNING_POSITION ]]
-then
-	echo "Player1 Won!"
-else
-	echo "Player2 Won!"
-fi
-	echo "Turn required : $rollCount"
+#Function to check player Won or not
+function checkWon() {
+	if [[ $currentPositionPlayer1 -eq $WINNING_POSITION ]]
+	then
+		echo "Player1 Won!"
+	else
+		echo "Player2 Won!"
+	fi
+		echo "Turn required : $rollCount"
+}
+
+#Main
+play
